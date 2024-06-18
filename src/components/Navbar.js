@@ -1,7 +1,10 @@
 import Link from "next/link";
 import Menu from "./Menu";
 import SearchBar from "./SearchBar";
-import NaveIcons from "./NavIcons";
+import dynamic from "next/dynamic";
+
+// Importing the NaveIcons dynamically to be able to use the window.href.location without any problem
+const NaveIcons = dynamic(() => import("./NavIcons"), { ssr: false });
 
 const Navbar = () => {
   return (
