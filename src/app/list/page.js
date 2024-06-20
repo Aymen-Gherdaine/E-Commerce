@@ -37,7 +37,7 @@ const ListPage = async ({ searchParams }) => {
             src="/shoes.png"
             alt="list page banner image"
             fill
-            sizes="100vw"
+            sizes="50vw"
             className="object-contain"
           />
         </div>

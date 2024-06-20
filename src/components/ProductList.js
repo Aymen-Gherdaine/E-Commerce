@@ -93,7 +93,7 @@ const ProductList = async ({ categoryId, limit, searchParams }) => {
                 }}
               ></div>
             )}
-            <button className="rounded-md bg-[#0c0c0c] text-[#fbfbfb] py-2 px-4 hover:bg-[#fbfbfb] hover:text-[#0c0c0c] transition-all ease-in-out duration-700 hover:border-[#0c0c0c] hover:border">
+            <button className="rounded-md  bg-[#0c0c0c] text-sm text-[#fbfbfb] py-2 px-4 hover:bg-[#fbfbfb] hover:text-[#0c0c0c] transition-all ease-in-out duration-700 hover:border-[#0c0c0c] hover:border">
               ADD TO CART
             </button>
           </Link>

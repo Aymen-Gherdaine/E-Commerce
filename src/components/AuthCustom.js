@@ -18,12 +18,6 @@ const CustomAuth = () => {
 
   const router = useRouter();
 
-  const isLoggedIn = wixClient.auth.loggedIn();
-
-  /*if (isLoggedIn) {
-    router.push("/");
-  }*/
-
   const [mode, setMode] = useState(MODE.LOGIN);
 
   const [username, setUsername] = useState("");
@@ -97,8 +91,6 @@ const CustomAuth = () => {
         default:
           break;
       }
-
-      console.log(response);
 
       switch (response?.loginState) {
         case LoginState.SUCCESS:
