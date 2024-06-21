@@ -9,7 +9,7 @@ import { createContext } from "react";
 // Checking if we have any refreshToken in the client cookie browser
 const refreshToken = JSON.parse(Cookies.get("refreshToken") || "{}");
 
-const wixClient = createClient({
+export const wixClient = createClient({
   modules: {
     products,
     currentCart,

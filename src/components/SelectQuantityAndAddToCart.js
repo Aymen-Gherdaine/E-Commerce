@@ -2,35 +2,31 @@
 
 import { useState } from "react";
 import { useWixClient } from "../hooks/useWixClient";
+import { useCartStore } from "../hooks/useCartStore";
 
 const SelectQuantityAndAddToCart = ({ productId, variantId, stockNumber }) => {
+  // Local state to manage quantity, initialized to 1
   const [quantity, setQuantity] = useState(1);
 
+  // Function to handle quantity changes
   const handleQuantity = (type) => {
+    // Increase quantity if the type is "increase" and quantity is less than stockNumber
     if (type === "increase" && quantity < stockNumber) {
       setQuantity((prev) => prev + 1);
     }
 
+    // Decrease quantity if the type is "decrease" and quantity is greater than 1
     if (type === "decrease" && quantity > 1) {
       setQuantity((prev) => prev - 1);
     }
   };
 
+  // Getting the wixClient instance from useWixClient hook
   const wixClient = useWixClient();
-  const addItem = async () => {
-    const response = await wixClient.currentCart.addToCurrentCart({
-      lineItems: [
-        {
-          catalogReference: {
-            appId: process.env.NEXT_PUBLIC_WIX_APP_ID,
-            catalogItemId: productId,
-            ...(variantId && { options: { variantId } }),
-          },
-          quantity: quantity,
-        },
-      ],
-    });
-  };
+
+  // Getting the addItem function from the cart store
+  const { addItem } = useCartStore();
+
   return (
     <div className="flex flex-col gap-4">
       <h4 className="font-semibold">Choose a Quantity</h4>
@@ -62,7 +58,7 @@ const SelectQuantityAndAddToCart = ({ productId, variantId, stockNumber }) => {
           )}
         </div>
         <button
-          onClick={() => addItem()}
+          onClick={() => addItem(wixClient, productId, variantId, quantity)}
           className="w-full sm:w-36 text-sm rounded-md ring-1 hover:ring-[#0c0c0c] bg-[#0c0c0c] text-[#fbfbfb] py-2 px-4 hover:bg-[#fbfbfb] hover:text-[#0c0c0c] transition-all duration-700 disabled:cursor-not-allowed disabled:bg-pink-200 disabled:text-[#fbfbfb] disabled:ring-none"
         >
           ADD TO CART

@@ -3,12 +3,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CartModal from "./CartModal";
 import { useWixClient } from "../hooks/useWixClient";
 import Cookies from "js-cookie";
+import { useCartStore } from "../hooks/useCartStore";
 
 const NaveIcons = () => {
+  // Getting the wixClient instance from useWixClient hook
   const wixClient = useWixClient();
 
   const router = useRouter();
@@ -26,8 +28,10 @@ const NaveIcons = () => {
     const userTokenFromCookies = Cookies.get("refreshToken");
 
     if (!userTokenFromCookies) {
+      // If no token found redirect the user to the login page
       router.push("/login");
     } else {
+      // Open & close the profile modal
       setIsProfileOpen((prev) => !prev);
     }
   };
@@ -41,9 +45,10 @@ const NaveIcons = () => {
   const handleLogout = async () => {
     setIsLoading(true);
 
+    // Remove the user cookie from the cookie store when logout
     Cookies.remove("refreshToken");
 
-    const { logoutUrl } = await wixClient.auth.logout(window.location.href);
+    await wixClient.auth.logout(window.location.href);
 
     setIsLoading(false);
 
@@ -51,6 +56,14 @@ const NaveIcons = () => {
 
     router.push("/login");
   };
+
+  // Getting the counter & getCart function from the cart store
+  const { counter, getCart } = useCartStore();
+
+  // Getting the cart items on mount and whenever the the cart change
+  useEffect(() => {
+    getCart(wixClient);
+  }, [getCart, wixClient]);
 
   return (
     <div className="flex items-center gap-4 xl:gap-6 relative">
@@ -89,7 +102,7 @@ const NaveIcons = () => {
           onClick={cartHandler}
         />
         <span className="absolute bg-red-600 text-[#FBFBFB] -top-4 -right-4 w-6 h-6 rounded-full flex justify-center items-center">
-          2
+          {counter}
         </span>
       </div>
       {isCartOpen && <CartModal />}
